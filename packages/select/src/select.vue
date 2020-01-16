@@ -43,7 +43,7 @@
           disable-transitions
         >
           <template v-if="tagComponent">
-            <component :is="tagComponent" :item="item"></component>
+            <component :is="tagComponent" :option="item"></component>
           </template>
           <span v-else class="el-select__tags-text">{{ item.currentLabel }}</span>
         </el-tag>
