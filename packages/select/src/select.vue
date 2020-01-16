@@ -12,46 +12,27 @@
       :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }"
     >
       <span v-if="collapseTags && selected.length">
-        <template slot="tag" v-if="$slots.tag">
-          <slot name="tag"></slot>
-          <el-tag
-            v-if="selected.length > 1"
-            :closable="false"
-            :size="collapseTagSize"
-            type="info"
-            disable-transitions
-          >
-            <span class="el-select__tags-text">+ {{ selected.length - 1 }}</span>
-          </el-tag>
-        </template>
-        <template v-else>
-          <el-tag
-            :closable="!selectDisabled"
-            :size="collapseTagSize"
-            :hit="selected[0].hitState"
-            type="info"
-            @close="deleteTag($event, selected[0])"
-            disable-transitions
-          >
-            <span class="el-select__tags-text">{{ selected[0].currentLabel }}</span>
-          </el-tag>
-          <el-tag
-            v-if="selected.length > 1"
-            :closable="false"
-            :size="collapseTagSize"
-            type="info"
-            disable-transitions
-          >
-            <span class="el-select__tags-text">+ {{ selected.length - 1 }}</span>
-          </el-tag>
-        </template>
+        <el-tag
+          v-if="selected.length > 1"
+          :closable="false"
+          :size="collapseTagSize"
+          type="info"
+          disable-transitions
+        >
+          <span class="el-select__tags-text">+ {{ selected.length - 1 }}</span>
+        </el-tag>
+        <el-tag
+          v-if="selected.length > 1"
+          :closable="false"
+          :size="collapseTagSize"
+          type="info"
+          disable-transitions
+        >
+          <span class="el-select__tags-text">+ {{ selected.length - 1 }}</span>
+        </el-tag>
       </span>
       <transition-group @after-leave="resetInputHeight" v-if="!collapseTags">
-        <template slot="tag" v-if="$slots.tag">
-          <slot name="tag"></slot>
-        </template>
         <el-tag
-          v-else
           v-for="item in selected"
           :key="getValueKey(item)"
           :closable="!selectDisabled"
@@ -61,7 +42,10 @@
           @close="deleteTag($event, item)"
           disable-transitions
         >
-          <span class="el-select__tags-text">{{ item.currentLabel }}</span>
+          <template v-if="tagComponent">
+            <component :is="tagComponent" :item="item"></component>
+          </template>
+          <span v-else class="el-select__tags-text">{{ item.currentLabel }}</span>
         </el-tag>
       </transition-group>
 
@@ -303,6 +287,7 @@ export default {
   directives: { Clickoutside },
 
   props: {
+    tagComponent: String,
     name: String,
     id: String,
     value: {
