@@ -43,7 +43,15 @@
           disable-transitions
         >
           <template v-if="tagComponent">
-            <component :is="tagComponent" :option="item"></component>
+            <div v-if="selectedItem(item.value)" class="el-image__tag">
+                <div class="el-image__tag-image-wrapper" @click="deleteTag($event, item)">
+                    <img class="el-image__tag-image" :src="selectedItem(item.value).imageUrl" />
+                    <div class="el-image__tag-close">
+                        <i class="el-tag__close el-icon-close el-image__tag-close-icon"></i>
+                    </div>
+                </div>
+                <span class="el-image__tag-text">{{ item.label }}</span>
+            </div>
           </template>
           <span v-else class="el-select__tags-text">{{ item.currentLabel }}</span>
         </el-tag>
@@ -287,11 +295,15 @@ export default {
   directives: { Clickoutside },
 
   props: {
-    tagComponent: String,
+    tagComponent: Boolean,
     name: String,
     id: String,
     value: {
       required: true
+    },
+    selectOptions: {
+      type: Array,
+      default: []
     },
     autocomplete: {
       type: String,
@@ -495,6 +507,9 @@ export default {
   },
 
   methods: {
+    selectedItem(value) {
+      return this.selectOptions.find(option => option.value === value);
+    },
     handleComposition(event) {
       const text = event.target.value;
       if (event.type === "compositionend") {
