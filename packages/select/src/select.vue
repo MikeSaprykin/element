@@ -303,7 +303,9 @@ export default {
     },
     selectOptions: {
       type: Array,
-      default: []
+      default() {
+        return []
+      }
     },
     autocomplete: {
       type: String,
