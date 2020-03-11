@@ -6,32 +6,6 @@
     <div
       class="el-carousel__container"
       :style="{ height: height }">
-      <transition
-        v-if="arrowDisplay"
-        name="carousel-arrow-left">
-        <button
-          type="button"
-          v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)"
-          @mouseenter="handleButtonEnter('left')"
-          @mouseleave="handleButtonLeave"
-          @click.stop="throttledArrowClick(activeIndex - 1)"
-          class="el-carousel__arrow el-carousel__arrow--left">
-          <i class="el-icon-arrow-left"></i>
-        </button>
-      </transition>
-      <transition
-        v-if="arrowDisplay"
-        name="carousel-arrow-right">
-        <button
-          type="button"
-          v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)"
-          @mouseenter="handleButtonEnter('right')"
-          @mouseleave="handleButtonLeave"
-          @click.stop="throttledArrowClick(activeIndex + 1)"
-          class="el-carousel__arrow el-carousel__arrow--right">
-          <i class="el-icon-arrow-right"></i>
-        </button>
-      </transition>
       <slot></slot>
     </div>
     <ul
@@ -50,6 +24,32 @@
           <span v-if="hasLabel">{{ item.label }}</span>
         </button>
       </li>
+      <transition
+              v-if="arrowDisplay"
+              name="carousel-arrow-left">
+        <button
+                type="button"
+                v-show="(arrow === 'always' || hover) && (loop || activeIndex > 0)"
+                @mouseenter="handleButtonEnter('left')"
+                @mouseleave="handleButtonLeave"
+                @click.stop="throttledArrowClick(activeIndex - 1)"
+                class="el-carousel__arrow el-carousel__arrow--left">
+          <i class="el-icon-arrow-left"></i>
+        </button>
+      </transition>
+      <transition
+              v-if="arrowDisplay"
+              name="carousel-arrow-right">
+        <button
+                type="button"
+                v-show="(arrow === 'always' || hover) && (loop || activeIndex < items.length - 1)"
+                @mouseenter="handleButtonEnter('right')"
+                @mouseleave="handleButtonLeave"
+                @click.stop="throttledArrowClick(activeIndex + 1)"
+                class="el-carousel__arrow el-carousel__arrow--right">
+          <i class="el-icon-arrow-right"></i>
+        </button>
+      </transition>
     </ul>
   </div>
 </template>
